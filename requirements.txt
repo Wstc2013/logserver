@@ -1,0 +1,4 @@
+redis
+MySQL-python
+configparser
+requests
