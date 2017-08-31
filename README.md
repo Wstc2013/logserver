@@ -1,6 +1,6 @@
 一、storm的安装与使用  
 
-1、安装  
+1、storm安装  
 步骤1、安装java环境  
 sudo apt-get install default-jre  
 步骤2、Linux环境下载storm(版本0.9.2)  
@@ -57,31 +57,31 @@ pyleus  build pyleus_topology.yaml  ##生成log_bolt项目
 
 二、逻辑说明： 
 
-数据类型             注释           field                         value
-PAYACCOUNT   付费账号     Channel:UUID       单UUID单渠道单位时间内的付费次数
-利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel:UUID自增
+数据类型             注释           field                         value  
+PAYACCOUNT   付费账号     Channel:UUID       单UUID单渠道单位时间内的付费次数  
+利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel:UUID自增  
 
-PAYCOUNT        付费次数      Channel              单渠道单位时间付费次数
-利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel自增
+PAYCOUNT        付费次数      Channel              单渠道单位时间付费次数  
+利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel自增  
 
-PAYNUM            付费人数      Channel               单渠道单位时间付费人数
-额外添加5个key（项目名:数据类型:游戏 ID:时间:channel）数据类型为集合，每获得一条数据把uuid放到额外添加5个key中（该key为对用户进行去重）。计算额外添加的5个key集合的长度，把值放到对应的5个key和field下
+PAYNUM            付费人数      Channel               单渠道单位时间付费人数  
+额外添加5个key（项目名:数据类型:游戏 ID:时间:channel）数据类型为集合，每获得一条数据把uuid放到额外添加5个key中（该key为对用户进行去重）。计算额外添加的5个key集合的长度，把值放到对应的5个key和field下  
 
-PAYSUM             付费总额      channel              单渠道单位时间付费总额
-利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的value加上对应的amount值
+PAYSUM             付费总额      channel              单渠道单位时间付费总额  
+利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的value加上对应的amount值  
 
-LOGINACCOUN T 登录账号    channel:uuid         单UUID单渠道单位时间内的登录次数 
-利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel:UUID自增
+LOGINACCOUN T 登录账号    channel:uuid         单UUID单渠道单位时间内的登录次数  
+利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel:UUID自增  
 
-LOGINCOUNT      登录次数     channel                单渠道登录次数总数
-利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel自增
+LOGINCOUNT      登录次数     channel                单渠道登录次数总数  
+利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel自增  
 
-LOGINNUM          登录人数      channel              单渠道登录人数(登录次数去重)
-额外添加5个key（项目名:数据类型:游戏 ID:时间:channel）数据类型为集合，每获得一条数据把uuid放到额外添加5个key中（该key为对用户进行去重）。计算额外添加的5个key集合的长度，把值放到对应的5个key和field下
+LOGINNUM          登录人数      channel              单渠道登录人数(登录次数去重)  
+额外添加5个key（项目名:数据类型:游戏 ID:时间:channel）数据类型为集合，每获得一条数据把uuid放到额外添加5个key中（该key为对用户进行去重）。计算额外添加的5个key集合的长度，把值放到对应的5个key和field下  
 
-FIRSTLOGIN        首登人数      channel             首次登录(注册)人数
-判断LOGINACCOUN ALL值是否存在，如果不存在利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key和field下的value自增。并且新增key（项目名:数据类型:游戏 ID:20170715:channel）类型为集合用于留存处理，如果判断LOGINACCOUN ALL值不存在，把uuid放入额外添加key中（该key为统计每天首登用户有哪些）
+FIRSTLOGIN        首登人数      channel             首次登录(注册)人数  
+判断LOGINACCOUN ALL值是否存在，如果不存在利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key和field下的value自增。并且新增key（项目名:数据类型:游戏 ID:20170715:channel）类型为集合用于留存处理，如果判断LOGINACCOUN ALL值不存在，把uuid放入额外添加key中（该key为统计每天首登用户有哪些） 
 
-RETAINED            留存数据      channel:day      留存人数，day为2，3，7，15，30 代表次留 ，三留，7留，15留，30   
-每获得一条数据，根据当前数据日期计算出2，3，7，15，30留对应的日期。根据2，3..留对应的日期可以找到对应的首登key（FIRSTLOGIN 中创建的），判断用户在哪天的首登key中，记录到对应的 channel:day中 
+RETAINED            留存数据      channel:day      留存人数，day为2，3，7，15，30 代表次留 ，三留，7留，15留，30  
+每获得一条数据，根据当前数据日期计算出2，3，7，15，30留对应的日期。根据2，3..留对应的日期可以找到对应的首登key（FIRSTLOGIN 中创建的），判断用户在哪天的首登key中，记录到对应的 channel:day中  
 
