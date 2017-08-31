@@ -22,6 +22,8 @@ class GameBolt(SimpleBolt):
          game_handle_logic_obj.behavior()
          log.debug("开始佣金处理!!!!")
          game_handle_logic_obj.commission()
+         log.debug("开始统计处理!!!!")
+         game_handle_logic_obj.statistics()
 
 
 

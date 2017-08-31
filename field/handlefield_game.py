@@ -45,3 +45,10 @@ class HandleField(object):
         channel = self.channel()
         field_list.append('%s:%s' % (channel, kindle))
         return field_list
+   
+    def type_serverid(self, type_value):
+        field_list = []
+        serverid = self.tup_value["serverID"]
+        field_list.append('%s:%s' % (type_value, serverid))
+        field_list.append('%s:ALL' % (type_value,))
+        return field_list

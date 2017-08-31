@@ -109,3 +109,31 @@ class GameHandleLogic(HandleLogic):
             uuid = i_uuid
             rate_id += rate_id
 
+    def statistics(self):
+        totalbet_fields = self.handle_field_obj.type_serverid("Totalbet")
+        totalbetcount_fields = self.handle_field_obj.type_serverid("TotalbetCount")
+        servicerevenue_fields = self.handle_field_obj.type_serverid("ServiceRevenue")
+        servicerevenuecount_fields = self.handle_field_obj.type_serverid("ServiceRevenueCount")
+        statis_key_list = self.handle_key_obj.base_key_list("STATISTICS")
+        log.debug("统计的key为:%s" % (statis_key_list))
+        kindld = str(self.tup_value['gameKindId'])
+        type_name = self.config.get(kindld, 'Type')
+        if 'BET' in type_name:
+            log.debug("类型为下注对应的field为:%s和%s" % (totalbet_fields,totalbetcount_fields))
+            totalbet = self.tup_value['totalbet']
+            log.debug("下注值为:%s" % (totalbet))
+            for statis_key in statis_key_list:
+                for totalbet_field in totalbet_fields:
+                    self.redis_obj.hincrbyfloat(statis_key, totalbet_field, totalbet)
+                for totalbetcount_field in totalbetcount_fields:
+                    self.redis_obj.hincrby(statis_key, totalbetcount_field)
+        else:
+            log.debug("类型为付费对应的field为:%s和%s" % (servicerevenue_fields,servicerevenuecount_fields))
+            servicerevenue = self.tup_value['servicerevenue']
+            log.debug("付费值为:%s" % (servicerevenue))
+            for statis_key in statis_key_list:
+                for servicerevenue_field in servicerevenue_fields:
+                    self.redis_obj.hincrbyfloat(statis_key, servicerevenue_field, servicerevenue)
+                for servicerevenuecount_field in servicerevenuecount_fields:
+                    self.redis_obj.hincrby(statis_key, servicerevenuecount_field)
+
