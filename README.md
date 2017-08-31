@@ -1,63 +1,62 @@
-安装步骤:  
-
 一、storm的安装与使用  
-1、安装
-步骤1、安装java环境
-sudo apt-get install default-jre
-步骤2、Linux环境下载storm(版本0.9.2)
-wget http://mirror.bit.edu.cn/apache/storm/apache-storm-0.9.2-incubating/apache-storm-0.9.2-incubating.tar.gz
-步骤3、解压
-tar zxvf apache-storm-0.9.2-incubating.tar.gz
-mv  apache-storm-0.9.2-incubating /data/storm
-步骤4、配置环境变量
-vi /etc/profile
-export STORM_HOME=/data/storm
-export PATH=$PATH:$STORM_HOME/bin
-source /etc/profile
-步骤5、编辑配置文件
-cd /data/storm
-vi conf/storm.yaml
-storm.zookeeper.servers:
-     - "192.168.199.208"    ##zookeeper地址
-nimbus.host: "192.168.199.208"  ##跑nimbus进程地址
-storm.zookeeper.port: 32181 ##zookeeper端口
-storm.local.dir: "/data/storm"
-supervisor.slots.ports:  ##开启的worker进程
-     - 6700
-     - 6701
-     - 6702
-     - 6703
-步骤6、启动服务
-nohup  /data/storm/bin/storm nimbus >/dev/null 2>&1 & 
-nohup  /data/storm/bin/storm supervisor >/dev/null 2>&1 & 
-nohup  /data/storm/bin/storm ui >/dev/null 2>&1 &
 
-2、部署storm项目
-步骤1、安装pyleus
-pip install pyleus
-步骤2、把storm项目copy到目标机器上
-log_bolt.tar.gz
-步骤3、创建项目需要的数据库、数据表结构
-CREATE DATABASE `logserver` /*!40100 DEFAULT CHARACTER SET utf8
-create table behavior(
-       ...   id INT NOT NULL AUTO_INCREMENT,
-       ...   uuid VARCHAR(100) NOT NULL,
-       ...   type VARCHAR(100) NOT NULL,
-       ...   strjson VARCHAR(100) NOT NULL,
-       ...   date VARCHAR(100) NOT NULL,
-       ...   primary key(id));
-步骤4、提交项目到storm
-tar zxvf log_bolt.tar.gz
-cd log_bolt/
-pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar
-说明（pylues操作）：
-pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar  ##提交项目到storm
-pyleus  kill -n 192.168.199.208 log_bolt  ##杀掉log_bolt项目
-pyleus  build pyleus_topology.yaml  ##生成log_bolt项目
+1、安装  
+步骤1、安装java环境  
+sudo apt-get install default-jre  
+步骤2、Linux环境下载storm(版本0.9.2)  
+wget http://mirror.bit.edu.cn/apache/storm/apache-storm-0.9.2-incubating/apache-storm-0.9.2-incubating.tar.gz  
+步骤3、解压  
+tar zxvf apache-storm-0.9.2-incubating.tar.gz  
+mv  apache-storm-0.9.2-incubating /data/storm  
+步骤4、配置环境变量  
+vi /etc/profile  
+export STORM_HOME=/data/storm  
+export PATH=$PATH:$STORM_HOME/bin  
+source /etc/profile  
+步骤5、编辑配置文件  
+cd /data/storm  
+vi conf/storm.yaml  
+storm.zookeeper.servers:  
+     - "192.168.199.208"    ##zookeeper地址  
+nimbus.host: "192.168.199.208"  ##跑nimbus进程地址  
+storm.zookeeper.port: 32181 ##zookeeper端口  
+storm.local.dir: "/data/storm"  
+supervisor.slots.ports:  ##开启的worker进程  
+     - 6700  
+     - 6701  
+     - 6702  
+     - 6703  
+步骤6、启动服务  
+nohup  /data/storm/bin/storm nimbus >/dev/null 2>&1 &   
+nohup  /data/storm/bin/storm supervisor >/dev/null 2>&1 &   
+nohup  /data/storm/bin/storm ui >/dev/null 2>&1 &  
+
+2、部署storm项目  
+步骤1、安装pyleus  
+pip install pyleus  
+步骤2、把storm项目copy到目标机器上  
+log_bolt.tar.gz  
+步骤3、创建项目需要的数据库、数据表结构  
+CREATE DATABASE `logserver` /*!40100 DEFAULT CHARACTER SET utf8  
+create table behavior(  
+       ...   id INT NOT NULL AUTO_INCREMENT,  
+       ...   uuid VARCHAR(100) NOT NULL,  
+       ...   type VARCHAR(100) NOT NULL,  
+       ...   strjson VARCHAR(100) NOT NULL,  
+       ...   date VARCHAR(100) NOT NULL,  
+       ...   primary key(id));  
+步骤4、提交项目到storm  
+tar zxvf log_bolt.tar.gz  
+cd log_bolt/  
+pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar  
+说明(pylues操作)  
+pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar  ##提交项目到storm  
+pyleus  kill -n 192.168.199.208 log_bolt  ##杀掉log_bolt项目  
+pyleus  build pyleus_topology.yaml  ##生成log_bolt项目  
 
 
+二、逻辑说明： 
 
-逻辑说明：
 数据类型             注释           field                         value
 PAYACCOUNT   付费账号     Channel:UUID       单UUID单渠道单位时间内的付费次数
 利用redis hash自增属性（hincrby）每获得一条数据让对应的5个key下的Channel:UUID自增
