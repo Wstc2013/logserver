@@ -1,3 +1,4 @@
+#-*-coding:utf8-*-
 import MySQLdb
 import logging
 
@@ -14,7 +15,7 @@ class mysql_operation(object):
             self.cur.execute(sql)
             self.db_obj.commit()
         except Exception as e:
-            log.debug(str(e))
+            log.debug("数据库插入报错:str(e)")
             self.db_obj.rollback()
         self.db_obj.close()
 
@@ -23,7 +24,7 @@ class mysql_operation(object):
             self.cur.execute(sql)
             ret = self.cur.fetchone()
         except Exception as e:
-            pass
+            log.debug("数据库查询报错:str(e)")
         self.db_obj.close()
         ret = ret[0]
         return ret

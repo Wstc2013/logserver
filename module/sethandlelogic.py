@@ -1,6 +1,10 @@
+#-*-coding:utf8-*-
 from handlelogic import HandleLogic
 import time
 from lib.mysql import mysql_operation
+import logging
+log = logging.getLogger('test_kafka')
+
 
 class SetHandleLogic(HandleLogic):
 
@@ -16,5 +20,6 @@ class SetHandleLogic(HandleLogic):
         be_type = 'settlement'
         strjson = str({'GameID': ret["game_id"], 'ChannelID': ret["channel"], 'Amount': amount})
         sql = """INSERT INTO behavior(uuid,type, strjson, date) VALUES ("%s", "%s", "%s", "%s")""" % (ret["uuid"], be_type, strjson, ret["timestamp"])
+        log.debug(u"结算行为sql为:%s" % (sql)) 
         mysql_operation_obj = mysql_operation('logserver')
         mysql_operation_obj.mysql_insert(sql)

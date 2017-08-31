@@ -11,12 +11,17 @@ class SetBolt(SimpleBolt):
     
     def process_tuple(self,tup):
          value = tup.values
-         #log.debug(value)
+         #log.debug("kafka获取到的数据为:%s" % (value))
          #set_handle_logic_obj = SetHandleLogic(value)
+         #log.debug(u"开启结算账号处理!!!!")
          #set_handle_logic_obj.account('SETTLEMENTACCOUNT','UUID')
+         #log.debug(u"开启结算次数处理!!!!")
          #set_handle_logic_obj.count('SETTLEMENTCOUNT')
+         #log.debug(u"开启结算人数处理!!!!")
          #set_handle_logic_obj.num('SETTLEMENTNUM','UUID')
+         #log.debug(u"开启结算金额处理!!!!")
          #set_handle_logic_obj.sum('SETTLESUM', 'Amount')
+         #log.debug(u"开启结算行为处理!!!!")
          #set_handle_logic_obj.behavior()
 
 
