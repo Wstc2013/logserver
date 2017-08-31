@@ -4,7 +4,7 @@
 1、安装
 步骤1、安装java环境
 sudo apt-get install default-jre
-步骤2、Linux环境下载storm（版本0.9.2）
+步骤2、Linux环境下载storm(版本0.9.2)
 wget http://mirror.bit.edu.cn/apache/storm/apache-storm-0.9.2-incubating/apache-storm-0.9.2-incubating.tar.gz
 步骤3、解压
 tar zxvf apache-storm-0.9.2-incubating.tar.gz
