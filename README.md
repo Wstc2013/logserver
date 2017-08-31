@@ -1,5 +1,6 @@
-安装步骤：
-一、storm的安装与使用
+安装步骤:  
+
+一、storm的安装与使用  
 1、安装
 步骤1、安装java环境
 sudo apt-get install default-jre
