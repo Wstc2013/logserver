@@ -11,11 +11,11 @@ class HandleKey(object):
         if self.tup_value.has_key('ChannelID'):
             channel = self.tup_value["ChannelID"]
         else:
-            channel = "ALL"
+            channel = "all"
         return channel
 
     def timestamp_list_format(self, timestamp_format_list, timefieldname):
-        timestamp_list = ['ALL']
+        timestamp_list = ['all']
         timestamp = timefieldname
         time_struct = time.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
         for timestamp_format in timestamp_format_list:
@@ -67,7 +67,7 @@ class HandleKey(object):
         return redis_channel_key
 
     def loginaccount_key(self):
-        loginaccount_key = 'ROYAL:LOGINACCOUNT:%s:ALL' % (self.game_id)
+        loginaccount_key = 'ROYAL:LOGINACCOUNT:%s:all' % (self.game_id)
         return loginaccount_key
 
     def firstlogin_key(self, date):
@@ -87,5 +87,5 @@ class HandleKey(object):
 
     def payaccount_key(self):
         game_id = self.game_id
-        payaccount_key = 'ROYAL:PAYACCOUNT:%s:ALL' % (game_id)
+        payaccount_key = 'ROYAL:PAYACCOUNT:%s:all' % (game_id)
         return payaccount_key

@@ -1,15 +1,16 @@
 #-*-coding:utf8-*-
 import time
-
 import redis
-
+import configparser
 from field.handlefield import HandleField
 from key.handlekey import HandleKey
 import logging
 log = logging.getLogger('test_kafka')
 
 class HandleLogic(object):
-    redis_obj = redis.Redis(host='192.168.199.208', port=6379, db=0)
+    config = configparser.ConfigParser()
+    config.read("config/config.ini",encoding='utf-8')
+    redis_obj = redis.Redis(host=config.get("redis", "hostname"), port=config.get("redis", "port"), db=0)
 
     def __init__(self):
         self.handle_key_obj = HandleKey(self.tup_value, self.timefield)

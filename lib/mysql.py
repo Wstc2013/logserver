@@ -1,13 +1,20 @@
 #-*-coding:utf8-*-
 import MySQLdb
 import logging
+import configparser
 
 log = logging.getLogger('test_kafka')
 
 class mysql_operation(object):
+    config = configparser.ConfigParser()
+    config.read("config/config.ini",encoding='utf-8')
+    hostname = config.get("mysql", "hostname")
+    user = config.get("mysql", "username")
+    password = config.get("mysql", "password")
+    port = int(config.get("mysql", "port"))
 
     def __init__(self, db):
-        self.db_obj = MySQLdb.connect(host='192.168.199.208', user='root', passwd='niku@2017', db=db, port=3306)
+        self.db_obj = MySQLdb.connect(host=self.hostname, user=self.user, passwd=self.password, db=db, port=self.port)
         self.cur = self.db_obj.cursor()
 
     def mysql_insert(self, sql):
