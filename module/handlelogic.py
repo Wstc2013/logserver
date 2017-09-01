@@ -10,7 +10,7 @@ log = logging.getLogger('test_kafka')
 class HandleLogic(object):
     config = configparser.ConfigParser()
     config.read("config/config.ini",encoding='utf-8')
-    redis_obj = redis.Redis(host=config.get("redis", "hostname"), port=config.get("redis", "port"), db=0)
+    redis_obj = redis.Redis(host=config.get("redis", "hostname"), port=int(config.get("redis", "port")), db=0)
 
     def __init__(self):
         self.handle_key_obj = HandleKey(self.tup_value, self.timefield)
