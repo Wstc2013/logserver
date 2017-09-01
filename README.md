@@ -45,15 +45,27 @@ create table behavior(
        ...   strjson VARCHAR(100) NOT NULL,  
        ...   date VARCHAR(100) NOT NULL,  
        ...   primary key(id));  
-步骤4、提交项目到storm  
+步骤4、配置storm项目配置文件  
 tar zxvf log_bolt.tar.gz  
 cd log_bolt/  
+vi config/config.ini  
+[mysql]  
+hostname = 192.168.199.208  ##数据库配置  
+username = root  
+password = niku@2017  
+port = 3306  
+
+[redis]  
+hostname = 192.168.199.208  ##redis配置  
+port = 6379  
+步骤5、提交项目到storm  
+cd log_bolt/  
+pyleus  build pyleus_topology.yaml  
 pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar  
-说明(pylues操作)  
+说明（pylues操作）  
 pyleus  --verbose submit -n 192.168.199.208 log_bolt.jar  ##提交项目到storm  
 pyleus  kill -n 192.168.199.208 log_bolt  ##杀掉log_bolt项目  
 pyleus  build pyleus_topology.yaml  ##生成log_bolt项目  
-
 
 二、逻辑说明： 
 
